@@ -2,40 +2,38 @@
 using namespace std;
 #define ll long long
 #define nl "\n"
-const int N = 2e5 + 10;
-
-ll n, k;
+const int N = 2e5 + 7;
+ll n, t;
 vector<ll> arr(N);
 
 bool isValid(ll mid){
-    ll sub = 0;
-    ll sum = 0;
+    ll temp = 0;
     for(int i=0; i<n; i++){
-        if(arr[i] > mid) return false;
-        if(arr[i] + sum > mid){
-            sub++;
-            sum = 0;
+        temp += mid/arr[i];
+        if(temp >= t){
+            break;
         }
-        sum += arr[i];
     }
-    if(sum > 0) sub++;
-    return sub <= k;
+    return temp >= t;
 }
 
+
 void solve(){
-    cin >> n >> k;
-    ll l = 0;
-    ll h = 0;
+    cin >> n;
+    cin >> t;
+    ll x = -1;
     for(int i=0; i<n; i++){
         cin >> arr[i];
-        h += arr[i];
+        x = max(arr[i], x);
     }
-    ll ans;
-    while(l <= h){
-        ll mid = l + (h - l)/2;
+    ll l = 0;
+    ll r = x * t;
+    ll ans = 0;
+    while(l <= r){
+        ll mid = l + (r-l)/2;
         if(isValid(mid)){
             ans = mid;
-            h = mid - 1; 
+            r = mid - 1;
         }else{
             l = mid + 1;
         }
